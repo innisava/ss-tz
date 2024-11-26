@@ -6,6 +6,7 @@
 
 ## Manual Installation
 
+
 ### Description
 
 ____
@@ -61,11 +62,12 @@ python3 manage.py runserver 0.0.0.0:8000
 
 ***The application will be accessible at:***
 - <http://localhost:8000>
-- Or at the IP address of your Docker host, e.g., <http://192.168.100.102:8000>.
+- Or at the IP address of your machine host, e.g., <http://192.168.100.102:8000>.
 
 ***
 
 ## Docker Installation (Automated Deployment)
+
 
 ### Description
 
@@ -79,8 +81,8 @@ This is a test Django application containerized with a PostgreSQL database and s
 ____
 
 
-- Docker (20.x or later)
-- Docker Compose (v2.x or later)
+- **Docker** (20.x or later)
+- **Docker Compose** (v2.x or later)
 
 ### Deployment
 
@@ -101,10 +103,32 @@ ____
      ```shell
      echo -e "\nuwsgi" >> requirements.txt
      ```
-  3. Build and start the application:
+  3. Build and deploy  the application:
      ```shell
      docker-compose up --build -d
      ```
 ***The application will be accessible at:***
 - <http://localhost:8000>
 - Or at the IP address of your Docker host, e.g., <http://192.168.100.102:8000>.
+
+
+____
+
+
+
+### Stopping the Application
+#### To stop the application:
+```shell
+docker-compose down
+```
+
+#### To completely reset (including PostgreSQL data):
+```shell
+docker-compose down -v
+```
+
+____
+
+### Serving with uWSGI
+
+The application is served using the uWSGI server, which runs inside the container. The uWSGI configuration is set during the image build process to ensure optimal performance and reliability for the Django application.
