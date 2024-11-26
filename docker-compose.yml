@@ -1,0 +1,39 @@
+version: '2.2'
+
+services:
+  db:
+    image: postgres:12.20
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_USER: worker
+      POSTGRES_PASSWORD: worker
+      POSTGRES_DB: app
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    container_name: django_app
+    restart: always
+    environment:
+      DJANGO_DB_HOST: db
+      DJANGO_DB_NAME: app
+      DJANGO_DB_USER: worker
+      DJANGO_DB_PASS: worker
+      DJANGO_DB_PORT: 5432
+      DJANGO_DEBUG: "False"
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    command: >
+      sh -c "
+      python manage.py migrate &&
+      uwsgi --http :8000 --module parrotsite.wsgi:application
+      "
+
+volumes:
+  db_data:
